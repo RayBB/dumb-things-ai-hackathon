@@ -50,6 +50,7 @@
 <div id="startAudio">🌊 Tap to Start 🌉</div>
 
 <audio src="sound/st.mp3" loop></audio>
+<script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
 
 <script>
 /* ---------- AUDIO ---------- */
@@ -452,6 +453,10 @@ fg.addEventListener('click', (e) => {
   }
 });
 
+window.addEventListener("load", (event) => {
+  console.log("Cursor effects loaded");
+  new cursoreffects.fairyDustCursor({element: document.querySelector("#startAudio")});
+});
 </script>
 </body>
 </html>

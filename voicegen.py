@@ -39,50 +39,50 @@ tech_bro_quotes = {
         {"text": "Cable car broke down again? Walk down Nob Hill - good cardio and same ETA."},
         {"text": "SF built these before were escalators. Shows what real innovation looked like."},
     ],
-    # "ai_billboard": [
-    #     {"text": "Billboards are a window into the soul of a city."},
-    #     {"text": "Why does every billboard have to be an AI billboard?"},
-    # ],
-    # "transamerica": [
-    #     {"text": "That pyramid's been the city's exclamation mark since I was knee-high to a fog bank."},
-    #     {"text": "Height limit violator, architectural rebel. We love it for that."}
-    # ],
-    # "lacroix": [
-    #     {"text": "Dude, all the Pamplemousse ran out? This is a supply chain FAILURE!"},
-    #     {"text": "La Croix? I optimized my hydration with electrolyte-infused smart water instead."},
-    #     {"text": "La Croix? Basic. I craft my own kombucha from biodynamic grapes in Napa."},
-    #     {"text": "I invested in the startup making premium sparkling water pods last week."},
-    # ],
-    # "goldengate": [
-    #     {"text": "Crossing the bridge always feels like entering another world - especially in the fog."},
-    #     {"text": "That bridge has stared down earthquakes, fog, and millions of tourist selfies."},
-    #     {"text": "Golden Gate at sunset? Pure magic. Worth every penny of toll."},
-    #     {"text": "They painted it orange so ships can see it through the fog. Smart thinking."},
-    #     {"text": "Half the reason I moved here was to jog across that bridge at dawn."},
-    #     {"text": "Bridge closes for high winds? Perfect excuse to re-read my stack of library books."}
-    # ],
-    # "clipper": [
-    #     {"text": "Getting seasick on the Larkspur? At least you're not on the 101 in rush hour."},
-    #     {"text": "Ferry terminal dog: better commute accessory than any coworking space."},
-    #     {"text": "Clipper card lost again? Third one this year. Dating myself with public transit woes."},
-    #     {"text": "Sausalito ferry at dusk - unbeatable commute if you time the tides right."},
-    #     {"text": "Golden Gate Ferry: because sometimes you need a break from the city's chaos."}
-    # ],
-    # "coyote": [
-    #     {"text": "Coyote wandering up Delores at 3 AM. Welcome to SF living."},
-    #     {"text": "Coyotes searching through my compost bin at midnight. Sustainable living has consequences."},
-    #     {"text": "Coyotes in the backyard? Urban nature red in tooth and claw."}
-    # ],
-    # "ia": [
-    #     {"text": "The internet archive preserves knowledge for future generations with open access."},
-    #     {"text": "Timeless wisdom and human history safeguarded in digital eternity."},
-    #     {"text": "Democratizing information through free archival preservation efforts."},
-    #     {"text": "Bridging the past and future through dedicated knowledge stewardship."}
-    # ],
-    # "avocado": [
-    #     {"text": "Avocado toast for $15? It's actually not a bad deal for this city."},
-    #     {"text": "Avocados lack blockchain supply chain verification for fair trade credibility."},
-    # ],
+    "ai_billboard": [
+        {"text": "Billboards are a window into the soul of a city."},
+        {"text": "Why does every billboard have to be an AI billboard?"},
+    ],
+    "transamerica": [
+        {"text": "That pyramid's been the city's exclamation mark since I was knee-high to a fog bank."},
+        {"text": "Height limit violator, architectural rebel. We love it for that."}
+    ],
+    "lacroix": [
+        {"text": "Dude, all the Pamplemousse ran out? This is a supply chain FAILURE!"},
+        {"text": "La Croix? I optimized my hydration with electrolyte-infused smart water instead."},
+        {"text": "La Croix? Basic. I craft my own kombucha from biodynamic grapes in Napa."},
+        {"text": "I invested in the startup making premium sparkling water pods last week."},
+    ],
+    "goldengate": [
+        {"text": "Crossing the bridge always feels like entering another world - especially in the fog."},
+        {"text": "That bridge has stared down earthquakes, fog, and millions of tourist selfies."},
+        {"text": "Golden Gate at sunset? Pure magic. Worth every penny of toll."},
+        {"text": "They painted it orange so ships can see it through the fog. Smart thinking."},
+        {"text": "Half the reason I moved here was to jog across that bridge at dawn."},
+        {"text": "Bridge closes for high winds? Perfect excuse to re-read my stack of library books."}
+    ],
+    "clipper": [
+        {"text": "Getting seasick on the Larkspur? At least you're not on the 101 in rush hour."},
+        {"text": "Ferry terminal dog: better commute accessory than any coworking space."},
+        {"text": "Clipper card lost again? Third one this year. Dating myself with public transit woes."},
+        {"text": "Sausalito ferry at dusk - unbeatable commute if you time the tides right."},
+        {"text": "Golden Gate Ferry: because sometimes you need a break from the city's chaos."}
+    ],
+    "coyote": [
+        {"text": "Coyote wandering up Delores at 3 AM. Welcome to SF living."},
+        {"text": "Coyotes searching through my compost bin at midnight. Sustainable living has consequences."},
+        {"text": "Coyotes in the backyard? Urban nature red in tooth and claw."}
+    ],
+    "ia": [
+        {"text": "The internet archive preserves knowledge for future generations with open access."},
+        {"text": "Timeless wisdom and human history safeguarded in digital eternity."},
+        {"text": "Democratizing information through free archival preservation efforts."},
+        {"text": "Bridging the past and future through dedicated knowledge stewardship."}
+    ],
+    "avocado": [
+        {"text": "Avocado toast for $15? It's actually not a bad deal for this city."},
+        {"text": "Avocados lack blockchain supply chain verification for fair trade credibility."},
+    ],
 }
 
 # Initialize Replicate client
