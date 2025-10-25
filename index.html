@@ -16,11 +16,26 @@
     pointer-events:auto;
   }
   #startAudio{
-    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+    position:fixed;top:50%;left:50%;
+    --sway: 0;
+    --bob: 0;
+    transform: translate(calc(-50% + var(--sway)), calc(-50% + var(--bob))) rotate(0deg) scale(1);
     z-index:100;color:#ffffff;font-family:Arial,Helvetica,sans-serif;
     font-size:24px;padding:20px;border:2px solid #66ccff;
-    background:rgba(0,0,0,0.8);border-radius:10px;cursor:pointer;
+    background:rgb(0, 195, 255);border-radius:10px;cursor:pointer;
     pointer-events:auto;
+  }
+
+  @keyframes buttonChaos {
+    0% { transform: translate(calc(-50% + var(--sway)), calc(-50% + var(--bob))) rotate(0deg) scale(1); box-shadow: 0 0 20px #66ccff; }
+    25% { transform: translate(calc(-50% + var(--sway)), calc(-50% + var(--bob))) rotate(2deg) scale(1.05); box-shadow: 0 0 30px #44aaff; }
+    50% { transform: translate(calc(-50% + var(--sway)), calc(-50% + var(--bob))) rotate(-2deg) scale(1); box-shadow: 0 0 25px #77ddff; }
+    75% { transform: translate(calc(-50% + var(--sway)), calc(-50% + var(--bob))) rotate(1deg) scale(1.03); box-shadow: 0 0 35px #55bbff; }
+    100% { transform: translate(calc(-50% + var(--sway)), calc(-50% + var(--bob))) rotate(0deg) scale(1.02); box-shadow: 0 0 20px #66ccff; }
+  }
+
+  #startAudio.animated {
+    animation: buttonChaos 3s ease-in-out infinite;
   }
 
 </style>
@@ -32,7 +47,7 @@
 
 <div id="ui"></div>
 
-<div id="startAudio">🎵 Tap to Start Audio</div>
+<div id="startAudio">🌊 Tap to Start 🌉</div>
 
 <audio src="sound/scizzie.mp3" loop></audio>
 
@@ -78,6 +93,17 @@ for(let i=0;i<10;i++) jellies.push({x:Math.random()*bg.width,y:bg.height+120,
 let t=0;
 function drawBG(){
   t++; const w=bg.width,h=bg.height;
+
+  // Animate the start audio button with chaotic ocean motion
+  if (startAudioBtn && startAudioBtn.style.display !== 'none') {
+    const buttonSway = Math.sin(t * 0.02) * 15; // horizontal sway
+    const buttonBob = Math.sin(t * 0.03) * 10; // vertical bobbing
+    startAudioBtn.style.setProperty('--sway', `${buttonSway}px`);
+    startAudioBtn.style.setProperty('--bob', `${buttonBob}px`);
+    if (!startAudioBtn.classList.contains('animated')) {
+      startAudioBtn.classList.add('animated');
+    }
+  }
 
   // gradient - brighter blues
   const g=bgCtx.createLinearGradient(0,0,0,h);
