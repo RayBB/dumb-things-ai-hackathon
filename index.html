@@ -150,105 +150,75 @@ let quoteTimeout; // Store timeout ID to prevent multiple timers
 
 const techBroQuotes = {
   fish: [
-    "This tuna reminds me of my backed-series startup that pivoted to crypto!",
-    "Fish? I'd prefer sustainable lab-grown salmon with CRISPR optimization.",
-    "Such inefficient swimming! Evolution should catch up to bionic upgrades.",
-    "My pet rock app has better retention than these finned relics."
+    "The bay's getting cleaner, but the mercury levels in those bigger fish? Scary.",
+    "Can fish actually live in the bay?",
   ],
   pelican: [
-    "Pelicans? I trained my drone falcon to fish more efficiently with AI vision.",
-    "This bird's workflow is so manual - no automated feeding algorithms?",
-    "I'd invest in the biotech startup making pelican genetic enhancements.",
-    "SF Bay water quality needs IoT sensors, not scavenging birds."
+    "These birds divebomb like Silicon Valley jumping on trends - total commitment.",
+    "Pelican watching: nature's way of telling you to slow down for once."
   ],
   muni: [
-    "Muni delays? My personal hyperloop pod gets me places 10x faster!",
-    "Public transit? Antiquated! I use quantum-entangled teleportation pods.",
-    "Muni schedules need predictive AI based on traffic patterns and crypto trends.",
-    "I coded an app for Muni that's funded by NFT sales of digital munis.",
-    "Why ride Muni when you can commute via augmented reality telepresence?"
+    "Why am I always the one who gets stuck waiting while every other line runs perfect?",
+    "Waited 45 minutes for the 22 Fillmore again. Might as well walk to Oakland at this point.",
   ],
   waymo: [
-    "Yo the app says my ride is 2 minutes away but you're not even moving!",
-    "Waymo? I'm driving Teslas through tunnels at 100mph with my eyes closed.",
-    "Self-driving? I built my own neural network for traffic prediction.",
-    "Automated driving lacks the human intuition for gap-finding in SF traffic.",
-    "Waymo payment integration should use crypto for micropayments.",
-    "Why isn't Waymo integrated with SuperShuttle and organized carpools?",
-    "Driverless cars need better algorithms for SF's erratic pedestrians.",
-    "I'd invest in the company doing high-speed autonomous bicycle couriers instead."
+    "App says 2 minutes away but they're just circling the block waiting for other passengers.",
+    "Self Driving Waymo cars are stuck and are honking at each other during the night in San Francisco.",
+    "Lets just take a Waymo. My last Uber driver talked too much.",
   ],
   sealion: [
-    "Sea lions barking? My smart home uses predictive AI to silence notifications.",
-    "This sealion's diet needs optimization - where's the organic algae smoothies?",
-    "I'd patent the app that turns sealion barks into NFT sound art.",
-    "Pier 39 infrastructure lacks modern smart sensors for wildlife monitoring.",
-    "Sea lions? Boring. I'm more interested in deep-sea mining robot colonies."
+    "These sea lions have been holed up at Pier 39 for years - kinda our mascot now.",
+    "Barking at tourists since 1990. World's most patient tour guides.",
   ],
   fog: [
-    "Fog? Just blockchain weather prediction to optimize my morning commute.",
-    "Karl the Fog needs AI-driven dispersal algorithms and crypto sponsorships.",
-    "This fog roll could be monetized with AR advertising billboards.",
-    "I'd invest in the startup using drones to restructure atmospheric conditions.",
-    "Fog delays my yacht launch - time for private weather manipulation tech!"
+    "Fog's like the nice aunt who visits unannounced and wrecks your hair plans.",
+    "Karl the Fog strikes again - this bastard loves ruining perfectly good sunsets.",
+    "Fog's the one thing in SF that actually respects 'taking it slow'."
   ],
   sourdough: [
-    "This bread starter needs blockchain authentication for artisanal provenance.",
-    "Sourdough? I prefer 3D-printed bread from algae protein alternatives.",
-    "SF bakeries lack algorithms for optimal yeast colony growth optimization.",
-    "My keto paleo regimen doesn't include carbs - where's the cricket flour?",
-    "I'd app-ify sourdough with IoT fermentation monitoring and smart ovens."
+    "Sourdough is SF's gold - better than rush, but don't get carried away by prospectors.",
+    "Tartine bread line is longer than the N Judah wait during a delay.",
+    "Sourdough's the only thing that rises reliably in this city besides housing costs.",
+    "My sourdough starter outlasted my last startup and two relationships."
   ],
   cablecar: [
-    "Cable cars are so inefficient! Why not automate with drone taxis?",
-    "Public transit should use hyperloops for zero-emission travel.",
-    "Cable cars need RFID tracking and dynamic pricing algorithms.",
-    "I'd invest in the app doing algorithmic cable car wait time prediction.",
-    "SF infrastructure is stuck in the 1800s! We need maglev transportation."
+    "Tourists think it's cute. Locals think it's a daily lottery with physics.",
+    "Cable car broke down again? Walk down Nob Hill - good cardio and same ETA.",
+    "SF built these before were escalators. Shows what real innovation looked like.",
   ],
   ai_billboard: [
-    "This billboard lacks dynamic neural networks for targeted ad optimization.",
-    "AI billboards should integrate with my decentralized identity profiles.",
-    "Static ads? Archaic! I demand holographic AR persuasion algorithms.",
-    "I'd seed investment in blockchain-based ad auction protocols.",
-    "Billboard AI needs quantum compute for real-time cultural trend hacking."
+    "Billboards are a window into the soul of a city.",
+    "Why does every billboard have to be an AI billboard?",
   ],
   transamerica: [
-    "That pyramid would look way better with LED smart glass and AR integration.",
-    "Transamerica Building needs holographic projections of blockchain art.",
-    "Pyramid shape is inefficient - design algorithms optimize for wind energy capture.",
-    "I'd code an app that gamifies climbing corporate skyscrapers virtually."
+    "That pyramid's been the city's exclamation mark since I was knee-high to a fog bank.",
+    "Height limit violator, architectural rebel. We love it for that."
   ],
   lacroix: [
     "Dude, all the Pamplemousse ran out? This is a supply chain FAILURE!",
     "La Croix? I optimized my hydration with electrolyte-infused smart water instead.",
-    "This flavor doesn't pair with my keto intermittent fasting regimen.",
-    "Not sustainable enough. Where's the recycled aluminum zero-waste alternative?",
     "La Croix? Basic. I craft my own kombucha from biodynamic grapes in Napa.",
-    "Cherry Lime? Lame. The biohacker in me demands adaptogenic mushrooms.",
-    "This isn't the lime flavor? WHY IS THE UX SO POOR?",
     "I invested in the startup making premium sparkling water pods last week.",
-    "Limiting to 12 flavors? Not user-centric design thinking.",
-    "La Croix contains aspartame? That's a dealbreaker for my clean eating journey!"
   ],
   goldengate: [
-    "The Golden Gate should have smart sensors for real-time structural monitoring.",
-    "Why isn't the bridge powered by tidal energy and LED display advertising?",
-    "Bridge tolls need dynamic pricing based on traffic flow algorithms."
+    "Crossing the bridge always feels like entering another world - especially in the fog.",
+    "That bridge has stared down earthquakes, fog, and millions of tourist selfies.",
+    "Golden Gate at sunset? Pure magic. Worth every penny of toll.",
+    "They painted it orange so ships can see it through the fog. Smart thinking.",
+    "Half the reason I moved here was to jog across that bridge at dawn.",
+    "Bridge closes for high winds? Perfect excuse to re-read my stack of library books."
   ],
   clipper: [
-    "Clipper cards? I use biometric blockchain wallets for seamless transit.",
-    "Ferry infrastructure needs supersonic hydrofoils with zero-emission jets.",
-    "Transit card UX is terrible - why not integrate with wearable neural interfaces?",
-    "I'd invest in the startup doing IoT-enabled floating solar farm ferries.",
-    "Water taxis lack AI routing algorithms for optimal passenger matching."
+    "Getting seasick on the Larkspur? At least you're not on the 101 in rush hour.",
+    "Ferry terminal dog: better commute accessory than any coworking space.",
+    "Clipper card lost again? Third one this year. Dating myself with public transit woes.",
+    "Sausalito ferry at dusk - unbeatable commute if you time the tides right.",
+    "Golden Gate Ferry: because sometimes you need a break from the city's chaos."
   ],
   coyote: [
-    "Coyotes? My robotic guard wolf pack is much more efficient at ecosystem management.",
-    "Urban wildlife needs genetic modification for reduced human interaction.",
-    "I'd patent drones that non-lethally relocate wildlife using behavioral AI.",
-    "Coyote population algorithms need better data integration with smart cities.",
-    "Wildlife corridors should use augmented reality fencing technology."
+    "Coyote wandering up Delores at 3 AM. Welcome to SF living.",
+    "Coyotes searching through my compost bin at midnight. Sustainable living has consequences.",
+    "Coyotes in the backyard? Urban nature red in tooth and claw."
   ],
   ia: [
     "The internet archive preserves knowledge for future generations with open access.",
@@ -257,11 +227,8 @@ const techBroQuotes = {
     "Bridging the past and future through dedicated knowledge stewardship."
   ],
   avocado: [
-    "Avocado toast? I prefer lab-grown fruit optimized for complete nutrition.",
-    "California agriculture needs IoT sensors for water usage optimization.",
+    "Avocado toast for $15? It's actually not a bad deal for this city.",
     "Avocados lack blockchain supply chain verification for fair trade credibility.",
-    "Mycelium-based alternatives offer sustainable, high-protein food futures.",
-    "Seasonal produce? Passe. Hydroponic vertical farms with AI cultivation control."
   ],
 };
 
