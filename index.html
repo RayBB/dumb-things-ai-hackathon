@@ -49,7 +49,7 @@
 
 <div id="startAudio">🌊 Tap to Start 🌉</div>
 
-<audio src="sound/scizzie.mp3" loop></audio>
+<audio src="sound/st.mp3" loop></audio>
 
 <script>
 /* ---------- AUDIO ---------- */
@@ -60,7 +60,7 @@ let audioStarted = false;
 const startAudioBtn = document.getElementById('startAudio');
 startAudioBtn.addEventListener('click', () => {
   if (!audioStarted) {
-    audio.volume = 0.75; // Set background audio to 75% volume
+    audio.volume = 0.5; // Set background audio to 75% volume
     audio.play().catch(err => {
       console.log('Audio play failed:', err);
     });
