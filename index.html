@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BluQuirks Aquarium</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  *{margin:0;padding:0;overflow:hidden;}
+  body{background:#000;}
+  canvas{display:block;position:absolute;top:0;left:0;}
+  #bg{z-index:1;}
+  #fg{z-index:2;}
+  #ui{
+    position:absolute;top:20px;right:20px;z-index:10;
+    color:#66ccff;font-family:Arial,Helvetica,sans-serif;
+    pointer-events:auto;
+  }
+  #collection-btn{
+    background:rgba(0,60,120,.7);border:2px solid #66ccff;
+    color:#66ccff;padding:12px 18px;border-radius:14px;
+    cursor:pointer;backdrop-filter:blur(10px);font-weight:bold;
+    transition:.3s;
+  }
+  #collection-btn:hover{
+    background:rgba(0,100,180,.9);transform:scale(1.08);
+    box-shadow:0 0 20px rgba(100,200,255,.6);
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<canvas id="fg"></canvas>
+
+<div id="ui"><div id="collection-btn">My Collection (0)</div></div>
+
+<script>
+/* ---------- CANVASES ---------- */
+const bg = document.getElementById('bg'), bgCtx = bg.getContext('2d');
+const fg = document.getElementById('fg'), fgCtx = fg.getContext('2d');
+const btn = document.getElementById('collection-btn');
+
+function resize(){
+  bg.width = fg.width = window.innerWidth;
+  bg.height = fg.height = window.innerHeight;
+}
+window.addEventListener('resize',resize); resize();
+
+/* ---------- BACKGROUND (ocean) ---------- */
+const particles=[],rays=[],jellies=[];
+for(let i=0;i<100;i++) particles.push({x:Math.random()*bg.width,y:Math.random()*bg.height,
+  vx:(Math.random()-0.5)*0.4,vy:Math.random()*0.6+0.2,r:Math.random()*1.8+0.8,a:Math.random()*0.6+0.3});
+for(let i=0;i<7;i++) rays.push({x:Math.random()*bg.width,s:Math.random()*0.6+0.4});
+for(let i=0;i<5;i++) jellies.push({x:Math.random()*bg.width,y:bg.height+120,
+  r:Math.random()*70+50,s:Math.random()*0.5+0.3,p:Math.random()*0.02});
+
+let t=0;
+function drawBG(){
+  t++; const w=bg.width,h=bg.height;
+
+  // gradient
+  const g=bgCtx.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,'#001833'); g.addColorStop(0.5,'#002850'); g.addColorStop(1,'#000d1a');
+  bgCtx.fillStyle=g; bgCtx.fillRect(0,0,w,h);
+
+  // depth fog
+  for(let y=0;y<h;y+=120){
+    const a=(y/h)*0.7;
+    bgCtx.fillStyle=`rgba(0,15,40,${a})`;
+    bgCtx.fillRect(0,y,w,100);
+  }
+
+  // light rays
+  rays.forEach(r=>{ r.x-=r.s; if(r.x<-400) r.x=w+400;
+    const gr=bgCtx.createLinearGradient(r.x,0,r.x+500,h);
+    gr.addColorStop(0,'rgba(120,220,255,.2)'); gr.addColorStop(1,'rgba(80,160,255,0)');
+    bgCtx.fillStyle=gr; bgCtx.beginPath();
+    bgCtx.moveTo(r.x,0); bgCtx.lineTo(r.x+500,0);
+    bgCtx.lineTo(r.x+350,h); bgCtx.lineTo(r.x-150,h);
+    bgCtx.closePath(); bgCtx.fill();
+  });
+
+  // plankton
+  particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy;
+    if(p.y>h){p.y=-20; p.x=Math.random()*w;}
+    bgCtx.fillStyle=`rgba(160,240,255,${p.a})`;
+    bgCtx.beginPath(); bgCtx.arc(p.x,p.y,p.r,0,Math.PI*2); bgCtx.fill();
+  });
+
+  // jellyfish
+  jellies.forEach(j=>{ j.y-=j.s;
+    if(j.y<-200){j.y=h+150; j.x=Math.random()*w;}
+    const pulse=Math.sin(t*j.p)*0.4+1;
+    const gj=bgCtx.createRadialGradient(j.x,j.y,0,j.x,j.y,j.r*pulse);
+    gj.addColorStop(0,'rgba(120,220,255,.35)');
+    gj.addColorStop(0.7,'rgba(90,180,255,.15)');
+    gj.addColorStop(1,'rgba(60,120,220,0)');
+    bgCtx.fillStyle=gj; bgCtx.beginPath();
+    bgCtx.arc(j.x,j.y,j.r*pulse,0,Math.PI*2); bgCtx.fill();
+  });
+
+  requestAnimationFrame(drawBG);
+}
+drawBG();
+
+/* ---------- FISH (PNG) ---------- */
+const fishImg = new Image();
+fishImg.src = 'https://static.vecteezy.com/system/resources/previews/024/722/367/large_2x/fish-with-ai-generated-free-png.png';
+
+const fishes = [];
+fishImg.onload = () => {
+  for(let i=0;i<12;i++){
+    const fromLeft = Math.random()>0.5;
+    fishes.push({
+      x: fromLeft ? -200 : fg.width+200,
+      y: Math.random()*(fg.height*0.7)+100,
+      vx: (fromLeft?1:-1)*(Math.random()*1.8+1.2),
+      w: 110, h: 70,               // size that looks good
+      flip: !fromLeft,
+      bob: Math.random()*0.04
+    });
+  }
+  // start foreground after image is ready
+  drawFG();
+};
+
+/* ---------- BUBBLES ---------- */
+const bubbles=[];
+for(let i=0;i<30;i++){
+  bubbles.push({
+    x:Math.random()*fg.width,
+    y:fg.height+Math.random()*150,
+    r:Math.random()*6+4,
+    s:Math.random()*2+1,
+    sway:Math.random()*0.04
+  });
+}
+
+/* ---------- FOREGROUND (fish + bubbles + quirk) ---------- */
+function drawFG(){
+  fgCtx.clearRect(0,0,fg.width,fg.height);
+  t++;
+
+  // ----- BUBBLES -----
+  bubbles.forEach(b=>{
+    b.y-=b.s; b.x+=Math.sin(t*b.sway)*0.6;
+    if(b.y<-30){b.y=fg.height+30; b.x=Math.random()*fg.width;}
+    fgCtx.fillStyle='rgba(220,245,255,.7)';
+    fgCtx.beginPath(); fgCtx.arc(b.x,b.y,b.r,0,Math.PI*2); fgCtx.fill();
+    fgCtx.fillStyle='rgba(255,255,255,.9)';
+    fgCtx.beginPath(); fgCtx.arc(b.x-b.r*0.4,b.y-b.r*0.4,b.r*0.3,0,Math.PI*2); fgCtx.fill();
+  });
+
+  // ----- FISH -----
+  fishes.forEach(f=>{
+    f.x+=f.vx;
+    f.y+=Math.sin(t*f.bob)*0.7;
+
+    if(f.x<-250||f.x>fg.width+250){
+      f.vx*=-1; f.flip=!f.flip;
+    }
+
+    fgCtx.save();
+    fgCtx.translate(f.x,f.y);
+    if(f.flip) fgCtx.scale(-1,1);
+    fgCtx.drawImage(fishImg,-f.w/2,-f.h/2,f.w,f.h);
+    fgCtx.restore();
+  });
+
+  // ----- QUIRK (Muni Bus) -----
+  if(t%750===0 && Math.random()<0.4) spawnQuirk();
+
+  requestAnimationFrame(drawFG);
+}
+
+/* ---------- MUNI BUS QUIRK ---------- */
+function spawnQuirk(){
+  const q={x:fg.width+220, y:Math.random()*(fg.height*0.6)+180, vx:-3, tapped:false};
+  const loop=setInterval(()=>{
+    q.x+=q.vx;
+
+    fgCtx.save(); fgCtx.translate(q.x,q.y);
+    // bus body
+    fgCtx.fillStyle='#00aaff'; fgCtx.fillRect(-100,-40,200,80);
+    fgCtx.fillStyle='#0077cc'; fgCtx.fillRect(-100,-40,200,30);
+    // windows
+    fgCtx.fillStyle='#ddeeff';
+    for(let i=0;i<7;i++) fgCtx.fillRect(-80+i*28,-35,22,40);
+    // wheels
+    fgCtx.fillStyle='#222';
+    fgCtx.beginPath(); fgCtx.arc(-50,40,20,0,Math.PI*2); fgCtx.fill();
+    fgCtx.beginPath(); fgCtx.arc(50,40,20,0,Math.PI*2); fgCtx.fill();
+    // fins
+    fgCtx.fillStyle='#00ffff';
+    fgCtx.beginPath(); fgCtx.moveTo(100,0); fgCtx.lineTo(130,-20); fgCtx.lineTo(130,20); fgCtx.closePath(); fgCtx.fill();
+    // text
+    fgCtx.fillStyle='#fff'; fgCtx.font='bold 28px Arial'; fgCtx.fillText('MUNI',-78,-2);
+    fgCtx.restore();
+
+    // click detection
+    fg.onclick=e=>{
+      const r=fg.getBoundingClientRect();
+      const mx=e.clientX-r.left, my=e.clientY-r.top;
+      if(Math.abs(mx-q.x)<120 && Math.abs(my-q.y)<70 && !q.tapped){
+        q.tapped=true; clearInterval(loop);
+        alert('MUNI BUS SPOTTED!\nMission: Snap a real one in the wild!');
+      }
+    };
+
+    if(q.x<-300){ clearInterval(loop); fg.onclick=null; }
+  },16);
+}
+
+/* ---------- COLLECTION BUTTON ---------- */
+btn.onclick=()=>{ alert('Collection: 0 Quirky Cards\n(Next step: AI-generated Pokémon cards!)'); };
+
+</script>
+</body>
+</html>
