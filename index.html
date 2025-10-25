@@ -105,30 +105,38 @@ drawBG();
 
 /* ---------- VEHICLE CONFIGS AND LOADING ---------- */
 const vehicleConfigs = [
-  { imgSrc: '/img/fish.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 13, facingLeft: false },
-  { imgSrc: '/img/muni.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 4, facingLeft: true },
-  { imgSrc: '/img/waymo.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true },
-  { imgSrc: '/img/fog.png', w: 200, h: 140, speedMin: 0.3, speedMax: 0.7, count: 2, facingLeft: false }
+  { imgSrc: '/img/fish.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 13, facingLeft: false, spawnProb: 1 },
+  { imgSrc: '/img/muni.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 4, facingLeft: true, spawnProb: 1 },
+  { imgSrc: '/img/waymo.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true, spawnProb: 1 },
+  { imgSrc: '/img/fog.png', w: 200, h: 140, speedMin: 0.3, speedMax: 0.7, count: 1, facingLeft: false, spawnProb: 0.1 }
 ];
 
 const vehicleTypes = [];
 let loadedImages = 0;
+
+function createVehicle(type) {
+  const config = type.config;
+  const fromLeft = Math.random() > 0.5;
+  type.vehicles.push({
+    x: fromLeft ? -300 : fg.width + 300,
+    y: Math.random() * (fg.height * 0.7) + 100,
+    vx: (fromLeft ? 1 : -1) * (Math.random() * (config.speedMax - config.speedMin) + config.speedMin),
+    w: config.w, h: config.h,
+    flip: config.facingLeft ? fromLeft : !fromLeft,
+    bob: Math.random() * 0.04
+  });
+}
 
 vehicleConfigs.forEach(config => {
   const img = new Image();
   img.src = config.imgSrc;
   const vehicles = [];
   img.onload = () => {
-    for(let i=0; i<config.count; i++){
-      const fromLeft = Math.random() > 0.5;
-      vehicles.push({
-        x: fromLeft ? -300 : fg.width + 300,
-        y: Math.random() * (fg.height * 0.7) + 100,
-        vx: (fromLeft ? 1 : -1) * (Math.random() * (config.speedMax - config.speedMin) + config.speedMin),
-        w: config.w, h: config.h,
-        flip: config.facingLeft ? fromLeft : !fromLeft,
-        bob: Math.random() * 0.04
-      });
+    // Spawn initial vehicles if spawnProb >=1 (always spawn mode)
+    if (config.spawnProb >= 1) {
+      for(let i=0; i<config.count; i++){
+        createVehicle({config, vehicles});
+      }
     }
     loadedImages++;
     if (loadedImages === vehicleConfigs.length) {
@@ -167,6 +175,13 @@ function drawFG(){
     fgCtx.beginPath(); fgCtx.arc(b.x,b.y,b.r,0,Math.PI*2); fgCtx.fill();
     fgCtx.fillStyle='rgba(255,255,255,.9)';
     fgCtx.beginPath(); fgCtx.arc(b.x-b.r*0.4,b.y-b.r*0.4,b.r*0.3,0,Math.PI*2); fgCtx.fill();
+  });
+
+  // ----- SPAWN VEHICLES ------
+  vehicleTypes.forEach(type => {
+    if (type.config.spawnProb > 0 && Math.random() < type.config.spawnProb && type.vehicles.length < type.config.count) {
+      createVehicle(type);
+    }
   });
 
   // ----- VEHICLES -----
