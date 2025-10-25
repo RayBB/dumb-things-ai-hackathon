@@ -67,8 +67,6 @@ startAudioBtn.addEventListener('click', () => {
     });
     audioStarted = true;
     startAudioBtn.style.display = 'none';
-    // Start spawning initial vehicles when audio starts
-    spawnInitialVehicles();
   }
 });
 
@@ -271,19 +269,19 @@ function spawnInitialVehicles() {
 
 /* ---------- VEHICLE CONFIGS AND LOADING ---------- */
 const vehicleConfigs = [
-  { imgSrc: 'img/fish.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 2, facingLeft: false, spawnProb: 1, name: 'fish' },
-  { imgSrc: 'img/pelican.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 5, facingLeft: true, spawnProb: 1, name: 'pelican' },
-  { imgSrc: 'img/muni.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 4, facingLeft: true, spawnProb: 1, name: 'muni' },
-  { imgSrc: 'img/waymo.png', w: 200, h: 120, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true, spawnProb: 1, name: 'waymo' },
+  { imgSrc: 'img/fish.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 2, facingLeft: false, spawnProb: 0.03, name: 'fish' },
+  { imgSrc: 'img/pelican.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 5, facingLeft: true, spawnProb: 0.04, name: 'pelican' },
+  { imgSrc: 'img/muni.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 4, facingLeft: true, spawnProb: 0.025, name: 'muni' },
+  { imgSrc: 'img/waymo.png', w: 200, h: 120, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true, spawnProb: 0.025, name: 'waymo' },
   { imgSrc: 'img/sealion.png', w: 90, h: 60, speedMin: 0.3, speedMax: 0.7, count: 1, facingLeft: false, spawnProb: 0.12, name: 'sealion' },
   { imgSrc: 'img/fog.png', w: 200, h: 140, speedMin: 0.3, speedMax: 0.7, count: 1, facingLeft: false, spawnProb: 0.1, name: 'fog' },
-  { imgSrc: 'img/sourdough.png', w: 120, h: 120, speedMin: 0.5, speedMax: 0.9, count: 1, facingLeft: false, spawnProb: 1, name: 'sourdough' },
-  { imgSrc: 'img/cable_car.png', w: 180, h: 120, speedMin: 0.5, speedMax: 1.3, count: 2, facingLeft: false, spawnProb: 1, name: 'cablecar' },
+  { imgSrc: 'img/sourdough.png', w: 120, h: 120, speedMin: 0.5, speedMax: 0.9, count: 1, facingLeft: false, spawnProb: 0.02, name: 'sourdough' },
+  { imgSrc: 'img/cable_car.png', w: 180, h: 120, speedMin: 0.5, speedMax: 1.3, count: 2, facingLeft: false, spawnProb: 0.025, name: 'cablecar' },
   { imgSrc: 'img/ai_billboard.png', w: 300, h: 180, speedMin: 0.2, speedMax: 0.5, count: 1, facingLeft: false, spawnProb: 0.05, name: 'ai_billboard' },
   { imgSrc: 'img/transamerica.png', w: 180, h: 300, speedMin: 0.1, speedMax: 0.2, count: 1, facingLeft: false, spawnProb: 0.02, name: 'transamerica' },
-  { imgSrc: 'img/lacroix.png', w: 50, h: 80, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true, spawnProb: 1, name: 'lacroix' },
+  { imgSrc: 'img/lacroix.png', w: 50, h: 80, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true, spawnProb: 0.04, name: 'lacroix' },
   { imgSrc: 'img/goldengate.png', w: 400, h: 200, speedMin: 0.05, speedMax: 0.1, count: 1, facingLeft: false, spawnProb: 0.03, name: 'goldengate' },
-  { imgSrc: 'img/clipper.png', w: 180, h: 100, speedMin: 1.0, speedMax: 2.0, count: 2, facingLeft: false, spawnProb: 1, name: 'clipper' },
+  { imgSrc: 'img/clipper.png', w: 180, h: 100, speedMin: 1.0, speedMax: 2.0, count: 2, facingLeft: false, spawnProb: 0.03, name: 'clipper' },
   { imgSrc: 'img/coyote.png', w: 100, h: 80, speedMin: 0.8, speedMax: 1.6, count: 1, facingLeft: true, spawnProb: 0.5, name: 'coyote' },
   { imgSrc: 'img/ia.png', w: 120, h: 80, speedMin: 0.8, speedMax: 1.6, count: 1, facingLeft: true, spawnProb: 0.5, name: 'ia' },
   { imgSrc: 'img/avocado.png', w: 90, h: 90, speedMin: 0.1, speedMax: 0.2, count: 3, facingLeft: true, spawnProb: 0.1, name: 'avocado' },
@@ -377,10 +375,10 @@ function drawFG(){
   });
 
   // ----- SPAWN VEHICLES ------
-  // Only spawn probabilistic vehicles after audio has started
+  // Only spawn vehicles after audio has started
   if (audioStarted) {
     vehicleTypes.forEach(type => {
-      if (type.config.spawnProb < 1 && Math.random() < type.config.spawnProb && type.vehicles.length < type.config.count) {
+      if (Math.random() < type.config.spawnProb && type.vehicles.length < type.config.count) {
         createVehicle(type);
       }
     });
