@@ -130,17 +130,19 @@ vehicleConfigs.forEach(config => {
   img.src = config.imgSrc;
   const vehicles = [];
   img.onload = () => {
-    // Spawn initial vehicles if spawnProb >=1 (always spawn mode)
-    if (config.spawnProb >= 1) {
-      for(let i=0; i<config.count; i++){
-        createVehicle({config, vehicles});
+    tintBlue(img, () => {
+      // Spawn initial vehicles if spawnProb >=1 (always spawn mode)
+      if (config.spawnProb >= 1) {
+        for(let i=0; i<config.count; i++){
+          createVehicle({config, vehicles});
+        }
       }
-    }
-    loadedImages++;
-    if (loadedImages === vehicleConfigs.length) {
-      // All images loaded, ensure drawFG is running if not started yet
-      drawFG();
-    }
+      loadedImages++;
+      if (loadedImages === vehicleConfigs.length) {
+        // All images loaded, ensure drawFG is running if not started yet
+        drawFG();
+      }
+    });
   };
   vehicleTypes.push({ img, vehicles, config });
 });
@@ -161,6 +163,31 @@ for(let i=0;i<30;i++){
 }
 
 /* ---------- FOREGROUND (fish + bubbles + quirk) ---------- */
+function tintBlue(img, callback) {
+  const canvas = document.createElement('canvas');
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imgData.data;
+  const factor = 0.3;
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
+    if (a > 0) {
+      data[i] = r * (1 - factor) + 0 * factor;
+      data[i + 1] = g * (1 - factor) + 0 * factor;
+      data[i + 2] = Math.min(255, b * (1 - factor) + 255 * factor);
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+  const originalSrc = img.src;
+  img.src = canvas.toDataURL();
+  img.onload = () => {
+    if (callback) callback(img);
+  };
+}
+
 function drawFG(){
   fgCtx.clearRect(0,0,fg.width,fg.height);
   t++;
