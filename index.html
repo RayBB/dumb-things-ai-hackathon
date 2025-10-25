@@ -103,47 +103,43 @@ function drawBG(){
 }
 drawBG();
 
-/* ---------- FISH (PNG) ---------- */
-const fishImg = new Image();
-fishImg.src = '/img/fish.png';
+/* ---------- VEHICLE CONFIGS AND LOADING ---------- */
+const vehicleConfigs = [
+  { imgSrc: '/img/fish.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 13, facingLeft: false },
+  { imgSrc: '/img/muni.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 4, facingLeft: true },
+  { imgSrc: '/img/waymo.png', w: 180, h: 120, speedMin: 0.6, speedMax: 1.4, count: 3, facingLeft: true }
+];
 
-const fishes = [];
-fishImg.onload = () => {
-  for(let i=0;i<13;i++){
-    const fromLeft = Math.random()>0.5;
-    fishes.push({
-      x: fromLeft ? -200 : fg.width+200,
-      y: Math.random()*(fg.height*0.7)+100,
-      vx: (fromLeft?1:-1)*(Math.random()*1.8+1.2),
-      w: 110, h: 70,               // size that looks good
-      flip: !fromLeft,
-      bob: Math.random()*0.04
-    });
-  }
-  // start foreground after image is ready
-  drawFG();
-};
+const vehicleTypes = [];
+let loadedImages = 0;
 
-/* ---------- MUNI VEHICLES (PNG) ---------- */
-const muniImg = new Image();
-muniImg.src = '/img/muni.png';
+vehicleConfigs.forEach(config => {
+  const img = new Image();
+  img.src = config.imgSrc;
+  const vehicles = [];
+  img.onload = () => {
+    for(let i=0; i<config.count; i++){
+      const fromLeft = Math.random() > 0.5;
+      vehicles.push({
+        x: fromLeft ? -300 : fg.width + 300,
+        y: Math.random() * (fg.height * 0.7) + 100,
+        vx: (fromLeft ? 1 : -1) * (Math.random() * (config.speedMax - config.speedMin) + config.speedMin),
+        w: config.w, h: config.h,
+        flip: config.facingLeft ? fromLeft : !fromLeft,
+        bob: Math.random() * 0.04
+      });
+    }
+    loadedImages++;
+    if (loadedImages === vehicleConfigs.length) {
+      // All images loaded, ensure drawFG is running if not started yet
+      drawFG();
+    }
+  };
+  vehicleTypes.push({ img, vehicles, config });
+});
 
-const muniVehicles = [];
-muniImg.onload = () => {
-  // Assume muni.png faces left (bus front is to the left)
-  // So for going right (fromLeft=true), flip=true to face right
-  for(let i=0;i<4;i++){  // fewer than fish
-    const fromLeft = Math.random()>0.5;
-    muniVehicles.push({
-      x: fromLeft ? -300 : fg.width+300,
-      y: Math.random()*(fg.height*0.7)+100,
-      vx: (fromLeft?1:-1)*(Math.random()*0.8+0.6),  // slower speed, less frequent appearance
-      w: 180, h: 120,  // bigger size
-      flip: fromLeft,   // flip to match direction
-      bob: Math.random()*0.04
-    });
-  }
-};
+// Start drawFG preemptively with first loaded (fish), but others will populate
+if (vehicleTypes[0].img.complete) drawFG(); // But since onload starts it, ok
 
 /* ---------- BUBBLES ---------- */
 const bubbles=[];
@@ -172,36 +168,23 @@ function drawFG(){
     fgCtx.beginPath(); fgCtx.arc(b.x-b.r*0.4,b.y-b.r*0.4,b.r*0.3,0,Math.PI*2); fgCtx.fill();
   });
 
-  // ----- FISH -----
-  fishes.forEach(f=>{
-    f.x+=f.vx;
-    f.y+=Math.sin(t*f.bob)*0.7;
+  // ----- VEHICLES -----
+  vehicleTypes.forEach(type => {
+    type.vehicles.forEach(v => {
+      v.x += v.vx;
+      v.y += Math.sin(t * v.bob) * 0.7;
 
-    if(f.x<-250||f.x>fg.width+250){
-      f.vx*=-1; f.flip=!f.flip;
-    }
+      if (v.x < -350 || v.x > fg.width + 350) {
+        v.vx *= -1;
+        v.flip = !v.flip;
+      }
 
-    fgCtx.save();
-    fgCtx.translate(f.x,f.y);
-    if(f.flip) fgCtx.scale(-1,1);
-    fgCtx.drawImage(fishImg,-f.w/2,-f.h/2,f.w,f.h);
-    fgCtx.restore();
-  });
-
-  // ----- MUNI VEHICLES -----
-  muniVehicles.forEach(m=>{
-    m.x+=m.vx;
-    m.y+=Math.sin(t*m.bob)*0.7;
-
-    if(m.x<-350||m.x>fg.width+350){
-      m.vx*=-1; m.flip=!m.flip;
-    }
-
-    fgCtx.save();
-    fgCtx.translate(m.x,m.y);
-    if(m.flip) fgCtx.scale(-1,1);
-    fgCtx.drawImage(muniImg,-m.w/2,-m.h/2,m.w,m.h);
-    fgCtx.restore();
+      fgCtx.save();
+      fgCtx.translate(v.x, v.y);
+      if (v.flip) fgCtx.scale(-1, 1);
+      fgCtx.drawImage(type.img, -v.w / 2, -v.h / 2, v.w, v.h);
+      fgCtx.restore();
+    });
   });
 
   requestAnimationFrame(drawFG);
