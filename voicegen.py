@@ -122,9 +122,10 @@ async def log_quotes_without_audio():
         for index, quote in enumerate(quotes):
             if "audio_src" not in quote:
                 file_path = f"voices/{category}_{index + 1}.wav"
-                print(f'Quote: "{quote["text"]}"')
-                print(f"Appropriate file path: {file_path}")
-                await generate_audio_with_prompt(quote["text"], file_path)
+                if not os.path.exists(file_path):
+                    print(f'Quote: "{quote["text"]}"')
+                    print(f"Appropriate file path: {file_path}")
+                    await generate_audio_with_prompt(quote["text"], file_path)
 
 if __name__ == "__main__":
     import asyncio
