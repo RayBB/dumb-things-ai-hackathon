@@ -65,6 +65,8 @@ startAudioBtn.addEventListener('click', () => {
     });
     audioStarted = true;
     startAudioBtn.style.display = 'none';
+    // Start spawning initial vehicles when audio starts
+    spawnInitialVehicles();
   }
 });
 
@@ -197,6 +199,18 @@ const techBroQuotes = {
   // ia: []
 };
 
+/* ---------- VEHICLE SPAWNING ---------- */
+function spawnInitialVehicles() {
+  // Spawn initial vehicles for all vehicle types that should always spawn (spawnProb >= 1)
+  vehicleTypes.forEach(type => {
+    if (type.config.spawnProb >= 1) {
+      for(let i = 0; i < type.config.count; i++){
+        createVehicle(type);
+      }
+    }
+  });
+}
+
 /* ---------- VEHICLE CONFIGS AND LOADING ---------- */
 const vehicleConfigs = [
   { imgSrc: 'img/fish.png', w: 110, h: 70, speedMin: 1.2, speedMax: 3.0, count: 2, facingLeft: false, spawnProb: 1, name: 'fish' },
@@ -238,12 +252,6 @@ vehicleConfigs.forEach(config => {
   const vehicles = [];
   img.onload = () => {
     tintBlue(img, () => {
-      // Spawn initial vehicles if spawnProb >=1 (always spawn mode)
-      if (config.spawnProb >= 1) {
-        for(let i=0; i<config.count; i++){
-          createVehicle({config, vehicles});
-        }
-      }
       loadedImages++;
       if (loadedImages === vehicleConfigs.length) {
         // All images loaded, ensure drawFG is running if not started yet
@@ -310,11 +318,14 @@ function drawFG(){
   });
 
   // ----- SPAWN VEHICLES ------
-  vehicleTypes.forEach(type => {
-    if (type.config.spawnProb > 0 && Math.random() < type.config.spawnProb && type.vehicles.length < type.config.count) {
-      createVehicle(type);
-    }
-  });
+  // Only spawn probabilistic vehicles after audio has started
+  if (audioStarted) {
+    vehicleTypes.forEach(type => {
+      if (type.config.spawnProb < 1 && Math.random() < type.config.spawnProb && type.vehicles.length < type.config.count) {
+        createVehicle(type);
+      }
+    });
+  }
 
   // ----- VEHICLES -----
   vehicleTypes.forEach(type => {
