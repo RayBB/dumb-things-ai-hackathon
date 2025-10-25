@@ -10,6 +10,7 @@
   canvas{display:block;position:absolute;top:0;left:0;}
   #bg{z-index:1;}
   #fg{z-index:2;}
+  #overlay{position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;}
   #ui{
     position:absolute;top:20px;right:20px;z-index:10;
     color:#66ccff;font-family:Arial,Helvetica,sans-serif;
@@ -44,6 +45,8 @@
 
 <canvas id="bg"></canvas>
 <canvas id="fg"></canvas>
+
+<div id="overlay"></div>
 
 <div id="ui"></div>
 
@@ -407,7 +410,7 @@ function drawFG(){
 }
 
 // Click handling for sassy tech bro quotes
-fg.addEventListener('click', (e) => {
+document.getElementById('overlay').addEventListener('click', (e) => {
   const rect = fg.getBoundingClientRect();
   const clickX = e.clientX - rect.left;
   const clickY = e.clientY - rect.top;
@@ -453,7 +456,7 @@ fg.addEventListener('click', (e) => {
 
 window.addEventListener("load", (event) => {
   console.log("Cursor effects loaded");
-  new cursoreffects.fairyDustCursor({element: document.querySelector("#startAudio")});
+  new cursoreffects.rainbowCursor({element: document.querySelector("#overlay")});
 });
 </script>
 </body>
