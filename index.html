@@ -379,7 +379,7 @@ function drawFG(){
   fgCtx.clearRect(0,0,fg.width,fg.height);
   t++;
 
-  // ----- BUBBLES ----- brighter blue aquatic
+  // ----- BUBBLES ----- brighter blue aquatic!
   bubbles.forEach(b=>{
     b.y-=b.s; b.x+=Math.sin(t*b.sway)*0.8;
     if(b.y<-30){b.y=fg.height+30; b.x=Math.random()*fg.width;}
