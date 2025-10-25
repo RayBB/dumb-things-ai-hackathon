@@ -171,13 +171,12 @@ function tintBlue(img, callback) {
   ctx.drawImage(img, 0, 0);
   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imgData.data;
-  const factor = 0.3;
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
     if (a > 0) {
-      data[i] = r * (1 - factor) + 0 * factor;
-      data[i + 1] = g * (1 - factor) + 0 * factor;
-      data[i + 2] = Math.min(255, b * (1 - factor) + 255 * factor);
+      data[i] = Math.min(255, r * 0.8);
+      data[i + 1] = Math.min(255, g * 0.8);
+      data[i + 2] = Math.min(255, b * 1.2);
     }
   }
   ctx.putImageData(imgData, 0, 0);
