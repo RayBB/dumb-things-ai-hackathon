@@ -15,16 +15,7 @@
     color:#66ccff;font-family:Arial,Helvetica,sans-serif;
     pointer-events:auto;
   }
-  #collection-btn{
-    background:rgba(0,60,120,.7);border:2px solid #66ccff;
-    color:#66ccff;padding:12px 18px;border-radius:14px;
-    cursor:pointer;backdrop-filter:blur(10px);font-weight:bold;
-    transition:.3s;
-  }
-  #collection-btn:hover{
-    background:rgba(0,100,180,.9);transform:scale(1.08);
-    box-shadow:0 0 20px rgba(100,200,255,.6);
-  }
+
 </style>
 </head>
 <body>
@@ -32,7 +23,7 @@
 <canvas id="bg"></canvas>
 <canvas id="fg"></canvas>
 
-<div id="ui"><div id="collection-btn">My Collection (0)</div></div>
+<div id="ui"></div>
 
 <audio src="sound/scizzie.mp3" autoplay></audio>
 
@@ -40,7 +31,6 @@
 /* ---------- CANVASES ---------- */
 const bg = document.getElementById('bg'), bgCtx = bg.getContext('2d');
 const fg = document.getElementById('fg'), fgCtx = fg.getContext('2d');
-const btn = document.getElementById('collection-btn');
 
 function resize(){
   bg.width = fg.width = window.innerWidth;
@@ -209,9 +199,6 @@ function drawFG(){
 
   requestAnimationFrame(drawFG);
 }
-
-/* ---------- COLLECTION BUTTON ---------- */
-btn.onclick=()=>{ alert('Collection: 0 Quirky Cards\n(Next step: AI-generated Pokémon cards!)'); };
 
 </script>
 </body>
