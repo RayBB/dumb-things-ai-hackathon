@@ -39,6 +39,11 @@
     animation: buttonChaos 3s ease-in-out infinite;
   }
 
+  .press-start-2p-regular {
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -441,7 +446,7 @@ document.getElementById('overlay').addEventListener('click', (e) => {
       // Show random quote from this vehicle's quote array
       const ui = document.getElementById('ui');
       const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      ui.innerHTML = `<div style="background:rgba(0,0,0,0.8);padding:10px;border-radius:5px;max-width:250px;">"${randomQuote.text}"</div>`;
+      ui.innerHTML = `<div class="press-start-2p-regular" style="color:hotpink;background:rgba(0,0,0,0.8);padding:10px;border-radius:5px;max-width:450px;">"${randomQuote.text}"</div>`;
       ui.style.display = 'block';
 
       // Play audio if this quote has an associated audio file
