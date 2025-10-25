@@ -146,6 +146,8 @@ function drawBG(){
 drawBG();
 
 /* ---------- TECH BRO QUOTES ---------- */
+let quoteTimeout; // Store timeout ID to prevent multiple timers
+
 const techBroQuotes = {
   fish: [
     "This tuna reminds me of my backed-series startup that pivoted to crypto!",
@@ -442,8 +444,9 @@ fg.addEventListener('click', (e) => {
       ui.innerHTML = `<div style="background:rgba(0,0,0,0.8);padding:10px;border-radius:5px;max-width:250px;">"${randomQuote}"</div>`;
       ui.style.display = 'block';
 
-      // Hide quote after 3 seconds
-      setTimeout(() => {
+      // Clear any existing timeout and set new 5-second hide timer
+      if (quoteTimeout) clearTimeout(quoteTimeout);
+      quoteTimeout = setTimeout(() => {
         ui.style.display = 'none';
       }, 5000);
       break; // Only show one quote per click
