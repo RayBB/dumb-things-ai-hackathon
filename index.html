@@ -109,7 +109,7 @@ fishImg.src = '/img/fish.png';
 
 const fishes = [];
 fishImg.onload = () => {
-  for(let i=0;i<12;i++){
+  for(let i=0;i<13;i++){
     const fromLeft = Math.random()>0.5;
     fishes.push({
       x: fromLeft ? -200 : fg.width+200,
@@ -122,6 +122,27 @@ fishImg.onload = () => {
   }
   // start foreground after image is ready
   drawFG();
+};
+
+/* ---------- MUNI VEHICLES (PNG) ---------- */
+const muniImg = new Image();
+muniImg.src = '/img/muni.png';
+
+const muniVehicles = [];
+muniImg.onload = () => {
+  // Assume muni.png faces left (bus front is to the left)
+  // So for going right (fromLeft=true), flip=true to face right
+  for(let i=0;i<4;i++){  // fewer than fish
+    const fromLeft = Math.random()>0.5;
+    muniVehicles.push({
+      x: fromLeft ? -300 : fg.width+300,
+      y: Math.random()*(fg.height*0.7)+100,
+      vx: (fromLeft?1:-1)*(Math.random()*0.8+0.6),  // slower speed, less frequent appearance
+      w: 180, h: 120,  // bigger size
+      flip: fromLeft,   // flip to match direction
+      bob: Math.random()*0.04
+    });
+  }
 };
 
 /* ---------- BUBBLES ---------- */
@@ -167,48 +188,23 @@ function drawFG(){
     fgCtx.restore();
   });
 
-  // ----- QUIRK (Muni Bus) -----
-  if(t%750===0 && Math.random()<0.4) spawnQuirk();
+  // ----- MUNI VEHICLES -----
+  muniVehicles.forEach(m=>{
+    m.x+=m.vx;
+    m.y+=Math.sin(t*m.bob)*0.7;
+
+    if(m.x<-350||m.x>fg.width+350){
+      m.vx*=-1; m.flip=!m.flip;
+    }
+
+    fgCtx.save();
+    fgCtx.translate(m.x,m.y);
+    if(m.flip) fgCtx.scale(-1,1);
+    fgCtx.drawImage(muniImg,-m.w/2,-m.h/2,m.w,m.h);
+    fgCtx.restore();
+  });
 
   requestAnimationFrame(drawFG);
-}
-
-/* ---------- MUNI BUS QUIRK ---------- */
-function spawnQuirk(){
-  const q={x:fg.width+220, y:Math.random()*(fg.height*0.6)+180, vx:-3, tapped:false};
-  const loop=setInterval(()=>{
-    q.x+=q.vx;
-
-    fgCtx.save(); fgCtx.translate(q.x,q.y);
-    // bus body
-    fgCtx.fillStyle='#00aaff'; fgCtx.fillRect(-100,-40,200,80);
-    fgCtx.fillStyle='#0077cc'; fgCtx.fillRect(-100,-40,200,30);
-    // windows
-    fgCtx.fillStyle='#ddeeff';
-    for(let i=0;i<7;i++) fgCtx.fillRect(-80+i*28,-35,22,40);
-    // wheels
-    fgCtx.fillStyle='#222';
-    fgCtx.beginPath(); fgCtx.arc(-50,40,20,0,Math.PI*2); fgCtx.fill();
-    fgCtx.beginPath(); fgCtx.arc(50,40,20,0,Math.PI*2); fgCtx.fill();
-    // fins
-    fgCtx.fillStyle='#00ffff';
-    fgCtx.beginPath(); fgCtx.moveTo(100,0); fgCtx.lineTo(130,-20); fgCtx.lineTo(130,20); fgCtx.closePath(); fgCtx.fill();
-    // text
-    fgCtx.fillStyle='#fff'; fgCtx.font='bold 28px Arial'; fgCtx.fillText('MUNI',-78,-2);
-    fgCtx.restore();
-
-    // click detection
-    fg.onclick=e=>{
-      const r=fg.getBoundingClientRect();
-      const mx=e.clientX-r.left, my=e.clientY-r.top;
-      if(Math.abs(mx-q.x)<120 && Math.abs(my-q.y)<70 && !q.tapped){
-        q.tapped=true; clearInterval(loop);
-        alert('MUNI BUS SPOTTED!\nMission: Snap a real one in the wild!');
-      }
-    };
-
-    if(q.x<-300){ clearInterval(loop); fg.onclick=null; }
-  },16);
 }
 
 /* ---------- COLLECTION BUTTON ---------- */
