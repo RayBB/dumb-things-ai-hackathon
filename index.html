@@ -60,6 +60,7 @@ let audioStarted = false;
 const startAudioBtn = document.getElementById('startAudio');
 startAudioBtn.addEventListener('click', () => {
   if (!audioStarted) {
+    audio.volume = 0.75; // Set background audio to 75% volume
     audio.play().catch(err => {
       console.log('Audio play failed:', err);
     });
